@@ -73,9 +73,9 @@ function [dx] = robust(t,x)
         dtheta= x(3:4,1);
         
         %error
-        epsilon_m2 = 10
-        epsilon_r2 = 0.5
-        epsilon_I2 = (15/12) 
+        epsilon_m2 = 1;
+        epsilon_r2 = 0.5;
+        epsilon_I2 = (15/12); 
         
         %the true model
         m2t = m2 + epsilon_m2*rand(1);% m1 true value is in [m1, m1+epsilon_m1] and epsilon_m1 a random number in [0,10];
@@ -115,8 +115,8 @@ function [dx] = robust(t,x)
         C_lower = [-b*sin(x(2))*x(4), -b*sin(x(2))*(x(3)+x(4)); b*sin(x(2))*x(3),0];
 
         % get other Ms
-        M_hat = 2*inv(M_lower+M_upper)*eye(2);
-        C_hat = 2*inv(C_lower+C_upper)*eye(2);
+        M_hat = M_lower;%2*inv(M_lower+M_upper)*eye(2);
+        C_hat = C_lower;2*inv(C_lower+C_upper)*eye(2);
         M_squiggy = Mmat - M_hat;
         C_squiggy = Cmat - C_hat;
         % error
@@ -127,20 +127,20 @@ function [dx] = robust(t,x)
         
         % Random coef
        
-        g1 = 5;
-        g2 = 3;
-        g3 = 3;
-        K0 = [ 75 0; 0 30 ];
-        K1 = [60 0; 0  50];
+        g1 = 8;
+        g2 = 15;
+        g3 = 15;
+        K0 = [ 120 0; 0 100 ];
+        K1 = [50 0; 0  10];
         
         A = [ 0 0 1  0;
               0 0 0  1;  
-               K0 K1];
+               -K0 -K1];
         B = [0,0;0 0;eye(2)];
-        Q = [ 33 0 0 0;
-              0  44 0 0;
-              0 0 25 0;
-              0 0 0 8];
+        Q = [ 100 0 0 0;
+              0  100 0 0;
+              0 0 100 0;
+              0 0 0 100];
         P = lyap(A,Q) ;
         
         normE = norm(e);
@@ -149,9 +149,10 @@ function [dx] = robust(t,x)
         % get the linear error system
         
         % get delta_alpha
-        transpose( B );
+       
       
         temp = transpose( B )*P*e;
+   
         if norm(temp) ==0
             delta_alpha = 0;
         else

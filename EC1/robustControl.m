@@ -8,7 +8,6 @@ m1 =10; m2=5; l1=1; l2=1; r1=0.5; r2 =.5; I1=10/12; I2=5/12; % parameters in the
 % the nominal parameter vector b0 is
 b0 = [ m1* r1^2 + m2*l1^2 + I1; m2*r2^2 + I2; m2*l1*r2];
 
-
 %% Trajectory planning block
 % Initial condition
 x0=[-0.5,0,-1,0.1];
@@ -17,7 +16,7 @@ xf=[0.8,0.5, 0, 0];
 % The parameter for planned joint trajectory 1 and 2.
 global a1 a2 % two polynomial trajectory for the robot joint
 %%%%%%%
-global torqueTime % for keeping track of control inputs in ode45
+global torqueTime pholist etalist % for keeping track of control inputs in ode45
 %%%%%%%
 nofigure=1;
 a1 = planarArmTraj(theta10,dtheta10, theta1f, dtheta1f,tf, nofigure);
@@ -27,6 +26,8 @@ a2 = planarArmTraj(theta20,dtheta20, theta2f, dtheta2f,tf, nofigure);
 torque=[];
 %%%%%%%%%%%
 torqueTime = [];
+pholist = [];
+etalist = [];
 %%%%%%%%%%%
 options = odeset('RelTol',1e-4,'AbsTol',[1e-4, 1e-4, 1e-4, 1e-4]);
 %[T,X] = ode45(@(t,x)planarArmODEUncertain(t,x),[0 tf],x0e,options);
@@ -52,8 +53,11 @@ xlabel N-m
 title 'Input Torque'
 legend('\tau_1','\tau_1')
 %%%%%%%%
-
-
+figure(4)
+hold on;
+plot(pholist)
+plot(etalist)
+legend('pho','eta')
 function [dx] = robust(t,x)
      K= 10*eye(2);
         Lambda= 5*eye(2);
@@ -127,25 +131,25 @@ function [dx] = robust(t,x)
         
         % Random coef
        
-        g1 = .1;
-        g2 = 13;
-        g3 = 15;
-        K0 = [ 20 0; 0 50 ];
-        K1 = [10 0; 0  10];
+        g1 = 15;
+        g2 = 10;
+        g3 = 8;
+        K0 = [ 150 0; 0 90 ];
+        K1 = [75 0; 0  10];
         
         A = [ 0 0 1  0;
               0 0 0  1;  
                -K0 -K1];
         B = [0,0;0 0;eye(2)];
-        Q = [ 33 0 0 0;
+        Q = [ 100 0 0 0;
               0  100 0 0;
-              0 0 10 0;
-              0 0 0 70];
+              0 0 100 0;
+              0 0 0 100];
         P = lyap(A,Q) ;
         
         normE = norm(e);
         pho = ( g1*normE + g2*normE^2 + g3);
-        
+        pholist = [pholist,pho];
         % get the linear error system
         
         % get delta_alpha
@@ -161,6 +165,7 @@ function [dx] = robust(t,x)
        
         a_q = theta_d - K0*e1 - K1*e2 + delta_alpha;
         eta = invM*( M_squiggy*a_q +  C_squiggy*dtheta  );
+        etalist = [etalist,norm(eta)];
         
         qdd = a_q + eta;
         
