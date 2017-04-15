@@ -1,0 +1,155 @@
+
+% This LaTeX was auto-generated from MATLAB code.
+% To make changes, update the MATLAB code and republish this document.
+
+\documentclass{article}
+\usepackage{graphicx}
+\usepackage{color}
+
+\sloppy
+\definecolor{lightgray}{gray}{0.5}
+\setlength{\parindent}{0pt}
+
+\begin{document}
+
+    
+    
+\section*{Nathaniel Goldfarb}
+
+\begin{par}
+HW3
+\end{par} \vspace{1em}
+
+\subsection*{Contents}
+
+\begin{itemize}
+\setlength{\itemsep}{-1ex}
+   \item Problem 1
+   \item Problem 2a
+   \item Problem 2b
+   \item Problem 2c
+   \item Problem 2d
+   \item Problem 2e
+   \item Problem 3a
+\end{itemize}
+
+
+\subsection*{Problem 1}
+
+
+
+\subsection*{Problem 2a}
+
+\begin{par}
+$$ C = [ B, AB]$
+\end{par} \vspace{1em}
+\begin{verbatim}
+A = [ 0 1;0 0];
+B = [0;1];
+
+C = [ B,A*B ]
+
+if det(C) ~= 0
+    disp('reachable')
+end
+\end{verbatim}
+
+        \color{lightgray} \begin{verbatim}
+C =
+
+     0     1
+     1     0
+
+reachable
+\end{verbatim} \color{black}
+    
+
+\subsection*{Problem 2b}
+
+\begin{verbatim}
+syms k1 k2 s
+
+A_hat = A - B*[k1 k2]
+
+controller = det( s*eye(2) - A_hat)
+\end{verbatim}
+
+        \color{lightgray} \begin{verbatim} 
+A_hat =
+ 
+[   0,   1]
+[ -k1, -k2]
+ 
+ 
+controller =
+ 
+s^2 + k2*s + k1
+ 
+\end{verbatim} \color{black}
+    \begin{par}
+comparing equations we have
+\end{par} \vspace{1em}
+\begin{par}
+$k1 = 1$
+\end{par} \vspace{1em}
+\begin{par}
+$k2 = 0.14$
+\end{par} \vspace{1em}
+
+
+\subsection*{Problem 2c}
+
+\begin{verbatim}
+t = 2;
+
+time = [ 1 0 0 0;....
+         0 1 0 0;...
+         1 t t^2 t^3;...
+         0 1 2*t 3*t^2];
+vec = [-5;0;1;1];
+
+a = time\vec
+\end{verbatim}
+
+        \color{lightgray} \begin{verbatim}
+a =
+
+   -5.0000
+         0
+    4.0000
+   -1.2500
+
+\end{verbatim} \color{black}
+    
+
+\subsection*{Problem 2d}
+
+\begin{par}
+$$e = x - x_d$
+\end{par} \vspace{1em}
+\begin{par}
+$$\dot{x} = Ax + Bu +L(y -Cx)$
+\end{par} \vspace{1em}
+
+
+\subsection*{Problem 2e}
+
+\begin{verbatim}
+e = det( s*eye(2) - A_hat)
+\end{verbatim}
+
+        \color{lightgray} \begin{verbatim} 
+e =
+ 
+s^2 + k2*s + k1
+ 
+\end{verbatim} \color{black}
+    
+
+\subsection*{Problem 3a}
+
+
+
+
+\end{document}
+    

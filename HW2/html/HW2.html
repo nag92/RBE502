@@ -1,0 +1,397 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>HW2</title><meta name="generator" content="MATLAB 9.1"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2017-02-12"><meta name="DC.source" content="HW2.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#1">Nathaniel Goldfarb</a></li><li><a href="#2">Problem 1a</a></li><li><a href="#3">Problem 1a</a></li><li><a href="#5">Problem 1b</a></li><li><a href="#7">Problem 1c1 and 1c2</a></li><li><a href="#8">Problem 1c3</a></li><li><a href="#9">Problem 2</a></li><li><a href="#10">Problem 3a</a></li><li><a href="#16">Problem 3b</a></li><li><a href="#17">Proble 3c</a></li><li><a href="#18">Problem 3d</a></li><li><a href="#19">Problem 4a</a></li><li><a href="#20">Problem 4b</a></li><li><a href="#21">Problem 4c</a></li><li><a href="#22">Problem 4d</a></li></ul></div><h2 id="1">Nathaniel Goldfarb</h2><p>HW2</p><pre class="codeinput">clear <span class="string">all</span>
+close <span class="string">all</span>
+clc
+</pre><h2 id="2">Problem 1a</h2><p><img src="HW2_eq13515035977115130267.png" alt="$$m_1 = e^{0t}$" style="width:54px;height:16px;"></p><p><img src="HW2_eq16492563136675630314.png" alt="$$m_2 = e^{-3t}$" style="width:62px;height:16px;"></p><h2 id="3">Problem 1a</h2><pre class="codeinput">G = tf( [200], [1,3,0])
+</pre><pre class="codeoutput">
+G =
+ 
+     200
+  ---------
+  s^2 + 3 s
+ 
+Continuous-time transfer function.
+
+</pre><pre class="codeinput">pole(G)
+</pre><pre class="codeoutput">
+ans =
+
+     0
+    -3
+
+</pre><h2 id="5">Problem 1b</h2><pre class="codeinput">pzmap(G)
+</pre><img vspace="5" hspace="5" src="HW2_01.png" style="width:560px;height:420px;" alt=""> <p>Since on poles is non-zero, and one is less then zero the system is said to maringal stable</p><h2 id="7">Problem 1c1 and 1c2</h2><p>(x+4)^3 = x^3 + 12x^2 + 48x + 64</p><pre class="codeinput">B = [ 64; 48; 12; 1]
+A = [0 0 200 0;<span class="keyword">...</span>
+     3 0 0 200;<span class="keyword">...</span>
+     1 3 0 0;<span class="keyword">...</span>
+     0 1 0 0]
+x = A\B
+
+C = tf([ x(4) x(3)], [ x(2),x(3)])
+</pre><pre class="codeoutput">
+B =
+
+    64
+    48
+    12
+     1
+
+
+A =
+
+     0     0   200     0
+     3     0     0   200
+     1     3     0     0
+     0     1     0     0
+
+
+x =
+
+    9.0000
+    1.0000
+    0.3200
+    0.1050
+
+
+C =
+ 
+  0.105 s + 0.32
+  --------------
+     s + 0.32
+ 
+Continuous-time transfer function.
+
+</pre><h2 id="8">Problem 1c3</h2><pre class="codeinput">impulseplot(C*G)
+</pre><img vspace="5" hspace="5" src="HW2_02.png" style="width:560px;height:420px;" alt=""> <h2 id="9">Problem 2</h2><p>Let, <img src="HW2_eq08891580406304617943.png" alt="$$\beta = (Js^2 + Bs)^{-1}$" style="width:111px;height:18px;"></p><p>Let, <img src="HW2_eq13496834624546712911.png" alt="$$\alpha = (K_p + K_i/s)$" style="width:106px;height:16px;"></p><p>Let, <img src="HW2_eq13204395635338371711.png" alt="$$\gamma = 1 + \alpha \beta +K_d \beta s$" style="width:124px;height:14px;"></p><p><img src="HW2_eq08004347359363450259.png" alt="$$\theta = \frac{\alpha \beta}{\gamma}\theta^{d} - \frac{\beta}{\gamma}D$" style="width:105px;height:34px;"></p><h2 id="10">Problem 3a</h2><pre class="codeinput">Kd = 20;
+Kp = 30;
+J = 2;
+B = 1;
+
+s = tf(<span class="string">'s'</span>);
+</pre><p>The model and controller are:</p><pre class="codeinput">P  = 1/(J*s^2 + B*s);
+
+C = tf(pid(Kp,0,Kd))
+</pre><pre class="codeoutput">
+C =
+ 
+  20 s + 30
+ 
+Continuous-time transfer function.
+
+</pre><p>The closed loop transerfunction is:</p><pre class="codeinput">H = feedback(P*C,1)
+</pre><pre class="codeoutput">
+H =
+ 
+      20 s + 30
+  -----------------
+  2 s^2 + 21 s + 30
+ 
+Continuous-time transfer function.
+
+</pre><p>The poles of the transfer function are:</p><pre class="codeinput">figure(2)
+step(H)
+</pre><img vspace="5" hspace="5" src="HW2_03.png" style="width:560px;height:420px;" alt=""> <p>Based on the transfer fucntion The damping ratio and natural frequnecy is:</p><pre class="codeinput">wn = sqrt(15)
+zeta = (.5*21)/(2*wn)
+a = 1;
+b = 2*zeta*wn;
+c = wn*wn;
+</pre><pre class="codeoutput">
+wn =
+
+    3.8730
+
+
+zeta =
+
+    1.3555
+
+</pre><pre class="codeinput"><span class="keyword">if</span> b*b &gt; 4*a*c
+    disp(<span class="string">'over Damped'</span>)
+<span class="keyword">elseif</span> b*b &lt; 4*a*c
+    disp(<span class="string">'under damped'</span>)
+<span class="keyword">else</span>
+    disp(<span class="string">'critial damped'</span>)
+<span class="keyword">end</span>
+</pre><pre class="codeoutput">over Damped
+</pre><h2 id="16">Problem 3b</h2><p>The values for the PD control are</p><pre class="codeinput">Kd_new = 199;
+Kp_new = 100;
+</pre><h2 id="17">Proble 3c</h2><pre class="codeinput">C_new = tf(pid(Kp_new,0,Kd_new));
+H2 = feedback(P*C_new,1);
+step(20*H2)
+</pre><img vspace="5" hspace="5" src="HW2_04.png" style="width:560px;height:420px;" alt=""> <h2 id="18">Problem 3d</h2><pre class="codeinput">D = 40/s;
+H3 = feedback(C*P+D,1)
+step(H3)
+</pre><pre class="codeoutput">
+H3 =
+ 
+      100 s^2 + 70 s
+  ----------------------
+  2 s^3 + 101 s^2 + 70 s
+ 
+Continuous-time transfer function.
+
+</pre><img vspace="5" hspace="5" src="HW2_05.png" style="width:560px;height:420px;" alt=""> <h2 id="19">Problem 4a</h2><p>using the RH the following bounaries are found</p><p><img src="HW2_eq02615090993354805164.png" alt="$$1+K_{d} &gt; 0$" style="width:69px;height:14px;"></p><p><img src="HW2_eq18237542292243651412.png" alt="$$K_p(1+K_d) &gt; 2K_I$" style="width:118px;height:16px;"></p><p><img src="HW2_eq10566843558968450360.png" alt="$$K_I &gt; 0$" style="width:45px;height:13px;"></p><h2 id="20">Problem 4b</h2><pre class="codeinput">Ki_new = 1;
+J = 1;
+B = 2;
+G = tf( [ Kp_new, Ki_new],[J, (B+Kd_new), Kp_new,Ki_new])
+figure(3)
+rlocus(G)
+</pre><pre class="codeoutput">
+G =
+ 
+          100 s + 1
+  -------------------------
+  s^3 + 201 s^2 + 100 s + 1
+ 
+Continuous-time transfer function.
+
+</pre><img vspace="5" hspace="5" src="HW2_06.png" style="width:560px;height:420px;" alt=""> <h2 id="21">Problem 4c</h2><pre class="codeinput">figure(4)
+step(40*G)
+</pre><img vspace="5" hspace="5" src="HW2_07.png" style="width:560px;height:420px;" alt=""> <h2 id="22">Problem 4d</h2><pre class="codeinput">Kp4 = 1;
+Kd4 = 1;
+</pre><p>Using the Routh Hurwitz criteria, the following value is set for Kd. These values are then pluged in to the closed loop transfer funciton. This reduces the system to a 2nd order with one zero pole</p><pre class="codeinput">Ki4 = 0;
+
+G = tf( [ Kp4, Ki4],[J, (B+Kd4), Kp4,Ki4])
+</pre><pre class="codeoutput">
+G =
+ 
+         s
+  ---------------
+  s^3 + 3 s^2 + s
+ 
+Continuous-time transfer function.
+
+</pre><p>Ploting the root locus</p><pre class="codeinput">figure(5)
+rlocus(G)
+figure(6)
+step(G)
+</pre><img vspace="5" hspace="5" src="HW2_08.png" style="width:560px;height:420px;" alt=""> <img vspace="5" hspace="5" src="HW2_09.png" style="width:560px;height:420px;" alt=""> <p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2016b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Nathaniel Goldfarb
+% HW2
+
+clear all
+close all
+clc
+
+%% Problem 1a
+%
+% $$m_1 = e^{0t}$
+%
+% $$m_2 = e^{-3t}$
+
+
+%% Problem 1a
+G = tf( [200], [1,3,0])
+%%
+pole(G)
+
+
+%% Problem 1b
+
+pzmap(G)
+%% 
+% Since on poles is non-zero, and one is less then zero
+% the system is said to maringal stable
+
+%% Problem 1c1 and 1c2 
+% (x+4)^3 = x^3 + 12x^2 + 48x + 64
+B = [ 64; 48; 12; 1]
+A = [0 0 200 0;...
+     3 0 0 200;...
+     1 3 0 0;...
+     0 1 0 0]
+x = A\B
+
+C = tf([ x(4) x(3)], [ x(2),x(3)])
+
+%% Problem 1c3
+
+impulseplot(C*G)
+
+
+%% Problem 2
+%
+% Let, $$\beta = (Js^2 + Bs)^{-1}$
+%
+% Let, $$\alpha = (K_p + K_i/s)$
+%
+% Let, $$\gamma = 1 + \alpha \beta +K_d \beta s$
+%
+% $$\theta = \frac{\alpha \beta}{\gamma}\theta^{d} - \frac{\beta}{\gamma}D$
+
+
+
+
+%% Problem 3a
+
+Kd = 20;
+Kp = 30;
+J = 2;
+B = 1;
+
+s = tf('s');
+
+%%
+% The model and controller are:
+
+P  = 1/(J*s^2 + B*s);
+
+C = tf(pid(Kp,0,Kd))
+
+%%
+% The closed loop transerfunction is:
+
+H = feedback(P*C,1)
+%%
+% The poles of the transfer function are:
+
+figure(2)
+step(H)
+
+%%
+% Based on the transfer fucntion The damping ratio and natural frequnecy
+% is:
+
+wn = sqrt(15)
+zeta = (.5*21)/(2*wn)
+a = 1;
+b = 2*zeta*wn;
+c = wn*wn;
+%%
+
+if b*b > 4*a*c
+    disp('over Damped')
+elseif b*b < 4*a*c
+    disp('under damped')
+else
+    disp('critial damped')
+end
+
+%% Problem 3b
+% The values for the PD control are
+Kd_new = 199;
+Kp_new = 100;
+
+%% Proble 3c
+C_new = tf(pid(Kp_new,0,Kd_new));
+H2 = feedback(P*C_new,1);
+step(20*H2)
+
+%% Problem 3d
+D = 40/s;
+H3 = feedback(C*P+D,1)
+step(H3)
+
+%% Problem 4a
+% using the RH the following bounaries are found
+%
+% $$1+K_{d} > 0$
+%
+% $$K_p(1+K_d) > 2K_I$
+%
+% $$K_I > 0$
+
+%% Problem 4b
+Ki_new = 1;
+J = 1;
+B = 2;
+G = tf( [ Kp_new, Ki_new],[J, (B+Kd_new), Kp_new,Ki_new]) 
+figure(3)
+rlocus(G)
+
+%% Problem 4c
+figure(4)
+step(40*G)
+
+%% Problem 4d
+
+Kp4 = 1;
+Kd4 = 1;
+
+%%
+% Using the Routh Hurwitz criteria, the following value is set for Kd.
+% These values are then pluged in to the closed loop transfer funciton.
+% This reduces the system to a 2nd order with one zero pole
+Ki4 = 0;
+
+G = tf( [ Kp4, Ki4],[J, (B+Kd4), Kp4,Ki4]) 
+%%
+% Ploting the root locus
+figure(5)
+rlocus(G)
+figure(6)   
+step(G)
+
+
+
+
+##### SOURCE END #####
+--></body></html>
