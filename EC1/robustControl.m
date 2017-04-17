@@ -16,7 +16,7 @@ xf=[0.8,0.5, 0, 0];
 % The parameter for planned joint trajectory 1 and 2.
 global a1 a2 % two polynomial trajectory for the robot joint
 %%%%%%%
-global torqueTime pholist etalist % for keeping track of control inputs in ode45
+global torqueTime pholist etalist check % for keeping track of control inputs in ode45
 %%%%%%%
 nofigure=1;
 a1 = planarArmTraj(theta10,dtheta10, theta1f, dtheta1f,tf, nofigure);
@@ -58,6 +58,10 @@ hold on;
 plot(pholist)
 plot(etalist)
 legend('pho','eta')
+
+figure(5)
+plot(check)
+mean(check)
 function [dx] = robust(t,x)
      K= 10*eye(2);
         Lambda= 5*eye(2);
@@ -156,13 +160,24 @@ function [dx] = robust(t,x)
        
       
         temp = transpose( B )*P*e;
-   
-        if norm(temp) ==0
-            delta_alpha = 0;
-        else
-            delta_alpha = -pho*(temp/norm(temp));
-        end
+        check = [check, norm(temp)];
+        %controller 1
+%         if norm(temp) ==0
+%             delta_alpha = 0;
+%         else
+%             delta_alpha = -pho*(temp/norm(temp));
+%         end
+        %
        
+     
+        ep =  470.8419;
+        if norm(temp)  >  ep
+            delta_alpha = -pho*(temp/norm(temp));;
+        else
+            delta_alpha = -pho*(temp)/ep;
+        end
+        
+        
         a_q = theta_d - K0*e1 - K1*e2 + delta_alpha;
         eta = invM*( M_squiggy*a_q +  C_squiggy*dtheta  );
         etalist = [etalist,norm(eta)];
