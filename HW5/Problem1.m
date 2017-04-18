@@ -7,7 +7,7 @@ m2 = 5;
 time = 10;
 % intial and final positions in meters
 [x2_i(1,1),x2_i(2,1)] = IK(1+sind(30),1+cos(30))
-[x2_f(1,1),x2_f(2,1)] = IK(2,0)
+[x2_f(1,1),x2_f(2,1)] = IK(0,2)
 
 theta1_path = planTraj(x2_i(1),x2_f(1),time);
 theta2_path = planTraj(x2_i(2),x2_f(2),time);
