@@ -13,7 +13,7 @@ theta1_path = planTraj(x2_i(1),x2_f(1),time);
 theta2_path = planTraj(x2_i(2),x2_f(2),time);
 
 
-sim('Problem2_model')
+sim('Problem1_model')
 secs = linspace(0,10, length(q));
 
 figure(1)
