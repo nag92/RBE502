@@ -1,3 +1,4 @@
+
 function []= robustControl(theta10,theta20,dtheta10, dtheta20,theta1f, theta2f,dtheta1f,dtheta2f,tf)
 % Robust control design for 2-D planar arm.
 % input: initial and final state.
@@ -77,7 +78,7 @@ legend('\tau_1','\tau_1')
         dtheta= x(3:4,1);
         
         %the true model
-        m1t = 12% m1 true value is in [m1, m1+epsilon_m1] and epsilon_m1 a random number in [0,10];
+        m1t = 12;% m1 true value is in [m1, m1+epsilon_m1] and epsilon_m1 a random number in [0,10];
         r1t = 0.8;
         l1t = 1.2; 
         I1t = 1;
@@ -108,9 +109,9 @@ legend('\tau_1','\tau_1')
         Y2= [ a(1), a(1) + a(2), 2*a(1)*cos(theta(2)) + a(2)*cos(theta(2)) - dtheta(2)*v(1)*sin(theta(2)) - v(2)*sin(theta(2))*(dtheta(1) + dtheta(2));...
             0, a(1) + a(2), a(1)*cos(theta(2)) + dtheta(1)*v(1)*sin(theta(2))];
         %% this is new
-        gamma = [ .01,0,0;
-                   0, .01,0;
-                   0 0 10];
+        gamma = [ 1,0,0;
+                   0, 1,0;
+                   0 0 1];
         thetahat_dot = -inv(gamma)*Y2'*r;
         %%
         epsilon=0.2;

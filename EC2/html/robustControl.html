@@ -1,0 +1,446 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>robustControl</title><meta name="generator" content="MATLAB 9.1"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2017-04-22"><meta name="DC.source" content="robustControl.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#1">testing algorithm with a set of initial and final states.</a></li><li><a href="#3">Trajectory planning block</a></li><li><a href="#5">this is new</a></li><li><a href="#7">new tau calculated</a></li></ul></div><h2 id="1">testing algorithm with a set of initial and final states.</h2><pre class="codeinput">clc
+clear <span class="string">all</span>
+close <span class="string">all</span>
+<span class="comment">%Example to demostrate the robust control with planar 2d arm.</span>
+theta10=-0.5;
+dtheta10 =0;
+theta1f = 0.8;
+dtheta1f=0;
+tf=2;
+
+<span class="comment">% plan a trajectory to reach target postion given by theta1f, dot theta1f,</span>
+<span class="comment">% theta2f, dot theta2f.</span>
+theta20=-1;
+dtheta20= 0.1;
+theta2f = 0.5;
+dtheta2f=0;
+
+robustControl(theta10,theta20,dtheta10, dtheta20,theta1f, theta2f,dtheta1f,dtheta2f,tf)<span class="comment">%plan_control(theta10,theta20,dtheta10, dtheta20,theta1f, theta2f,dtheta1f,dtheta2f,tf)</span>
+
+
+
+
+
+
+<span class="keyword">function</span> []= robustControl(theta10,theta20,dtheta10, dtheta20,theta1f, theta2f,dtheta1f,dtheta2f,tf)
+</pre><pre class="codeinput"><span class="comment">% Robust control design for 2-D planar arm.</span>
+<span class="comment">% input: initial and final state.</span>
+<span class="comment">% output: Demostrate the performance of robust controller with parameter</span>
+<span class="comment">% uncertainty.</span>
+<span class="comment">% the nominal model parameter:</span>
+m1 =10; m2=5; l1=1; l2=1; r1=0.5; r2 =.5; I1=10/12; I2=5/12; <span class="comment">% parameters in the paper.</span>
+<span class="comment">% the nominal parameter vector b0 is</span>
+<span class="comment">%b0 = [ m1* r1^2 + m2*l1^2 + I1; m2*r2^2 + I2; m2*l1*r2];</span>
+b0 = [ m1* r1^2 + m2*l1^2 + I1, m2*r2^2 + I2, m2*l1*r2];
+</pre><h2 id="3">Trajectory planning block</h2><p>Initial condition</p><pre class="codeinput">x0=[-0.5,0,-1,0.1];
+x0e = [-0.7,0.5,-0.2,0,b0]; <span class="comment">% an error in the initial state.</span>
+xf=[0.8,0.5, 0, 0];
+<span class="comment">% The parameter for planned joint trajectory 1 and 2.</span>
+<span class="keyword">global</span> a1 a2 <span class="comment">% two polynomial trajectory for the robot joint</span>
+<span class="comment">%%%%%%%</span>
+<span class="keyword">global</span> torqueTime <span class="comment">% for keeping track of control inputs in ode45</span>
+<span class="comment">%%%%%%%</span>
+nofigure=1;
+a1 = planarArmTraj(theta10,dtheta10, theta1f, dtheta1f,tf, nofigure);
+a2 = planarArmTraj(theta20,dtheta20, theta2f, dtheta2f,tf, nofigure);
+
+
+torque=[];
+<span class="comment">%%%%%%%%%%%</span>
+torqueTime = [];
+<span class="comment">%%%%%%%%%%%</span>
+options = odeset(<span class="string">'RelTol'</span>,1e-4,<span class="string">'AbsTol'</span>,[1e-4, 1e-4, 1e-4, 1e-4,1e-4, 1e-4, 1e-4]);
+[T,X] = ode45(@(t,x)planarArmODEUncertain(t,x),[0 tf],x0e,options);
+
+figure(<span class="string">'Name'</span>,<span class="string">'theta1'</span>);
+plot(T, X(:,1),<span class="string">'r-'</span>);
+hold <span class="string">on</span>
+plot(T, a1(1)+a1(2)*T+ a1(3)*T.^2+a1(4)*T.^3,<span class="string">'b-'</span>);
+title(<span class="string">'Theta_1 under Robust Control'</span>);
+figure(<span class="string">'Name'</span>,<span class="string">'theta2'</span>);
+plot(T, X(:,2),<span class="string">'r-'</span>);
+hold <span class="string">on</span>
+plot(T, a2(1)+a2(2)*T+ a2(3)*T.^2+a2(4)*T.^3, <span class="string">'b-'</span>);
+title(<span class="string">'Theta_2 under Robust Control'</span>);
+<span class="comment">%%%%%%%%</span>
+uIdx = resampleTime(T,torqueTime);
+figure
+plot(T,torque(1,uIdx))
+hold <span class="string">on</span>
+plot(T,torque(2,uIdx))
+xlabel <span class="string">seconds</span>
+xlabel <span class="string">N-m</span>
+title <span class="string">'Input Torque'</span>
+legend(<span class="string">'\tau_1'</span>,<span class="string">'\tau_1'</span>)
+<span class="comment">%%%%%%%%</span>
+
+
+
+
+    <span class="keyword">function</span> [dx ] = planarArmODEUncertain(t,x)
+</pre><pre class="codeinput">        <span class="comment">% feedback gain matrix K AND LAMBDA.</span>
+        K= 10*eye(2);
+        Lambda= 5*eye(2);
+        <span class="comment">% Compute the desired state and their time derivatives from planned</span>
+        <span class="comment">% trajectory.</span>
+        vec_t = [1; t; t^2; t^3]; <span class="comment">% cubic polynomials</span>
+        theta_d= [a1'*vec_t; a2'*vec_t];
+        <span class="comment">%ref = [ref,theta_d];</span>
+        <span class="comment">% compute the velocity and acceleration in both theta 1 and theta2.</span>
+        a1_vel = [a1(2), 2*a1(3), 3*a1(4), 0];
+        a1_acc = [2*a1(3), 6*a1(4),0,0 ];
+        a2_vel = [a2(2), 2*a2(3), 3*a2(4), 0];
+        a2_acc = [2*a2(3), 6*a2(4),0,0 ];
+        dtheta_d =[a1_vel*vec_t; a2_vel* vec_t];
+        ddtheta_d =[a1_acc*vec_t; a2_acc* vec_t];
+        theta= x(1:2,1);
+        dtheta= x(3:4,1);
+
+        <span class="comment">%the true model</span>
+        m1t = 12;<span class="comment">% m1 true value is in [m1, m1+epsilon_m1] and epsilon_m1 a random number in [0,10];</span>
+        r1t = 0.8;
+        l1t = 1.2;
+        I1t = 1;
+
+        m2t = 4;<span class="comment">% m1 true value is in [m1, m1+epsilon_m1] and epsilon_m1 a random number in [0,10];</span>
+        l2t = 1.2;
+        r2t = 0.5;
+        I2t = 0.5;
+
+        a = I1t+I2t+m1t*r1t^2+ m2t*(l1t^2+ r2t^2);
+        b = m2t*l1t*r2t;
+        d = I2t+ m2t*r2t^2;
+        <span class="comment">% the actual dynamic model of the system is characterized by M and</span>
+        <span class="comment">% C</span>
+        Mmat = [a+2*b*cos(x(2)), d+b*cos(x(2));  d+b*cos(x(2)), d];
+        Cmat = [-b*sin(x(2))*x(4), -b*sin(x(2))*(x(3)+x(4)); b*sin(x(2))*x(3),0];
+        invM = inv(Mmat);
+        invMC = invM*Cmat;
+
+
+        <span class="comment">% compute the robust controller</span>
+        e = theta - theta_d;
+        de = dtheta - dtheta_d;
+        r = de + Lambda*e;
+        v = dtheta_d - Lambda*e;
+        a = ddtheta_d - Lambda*de;
+
+        Y2= [ a(1), a(1) + a(2), 2*a(1)*cos(theta(2)) + a(2)*cos(theta(2)) - dtheta(2)*v(1)*sin(theta(2)) - v(2)*sin(theta(2))*(dtheta(1) + dtheta(2));<span class="keyword">...</span>
+            0, a(1) + a(2), a(1)*cos(theta(2)) + dtheta(1)*v(1)*sin(theta(2))];
+</pre><h2 id="5">this is new</h2><pre class="codeinput">        gamma = [ 1,0,0;
+                   0, 1,0;
+                   0 0 1];
+        thetahat_dot = -inv(gamma)*Y2'*r;
+</pre><pre class="codeinput">        epsilon=0.2;
+        rho = 13.46; <span class="comment">% see eq(27) in the paper.</span>
+
+<span class="comment">%         if norm(Y2'*r) &gt; epsilon</span>
+<span class="comment">%             u = -rho* Y2'*r/norm(Y2'*r);</span>
+<span class="comment">%         else</span>
+<span class="comment">%             u = - rho* Y2'*r/epsilon;</span>
+<span class="comment">%         end</span>
+
+        <span class="comment">%tau = Y2*(b0 + u)- K*r</span>
+</pre><h2 id="7">new tau calculated</h2><pre class="codeinput">        tau = Y2*x(5:7) - K*r;
+        torque =[torque, tau];
+        <span class="comment">%%%%%%%%</span>
+        torqueTime =[torqueTime, t];
+        <span class="comment">%%%%%%%%</span>
+        <span class="comment">% feed back the thetaHat_dots</span>
+        dx=zeros(7,1);
+        dx(1) = x(3);
+        dx(2) = x(4);
+        dx(3:4) = -invMC* x(3:4) +invM*tau; <span class="comment">% because ddot theta = -M^{-1}(C \dot Theta) + M^{-1} tau</span>
+        dx(5:7) = thetahat_dot;
+</pre><pre class="codeinput">    <span class="keyword">end</span>
+</pre><pre class="codeinput"><span class="keyword">end</span>
+
+
+<span class="keyword">function</span> uIdx = resampleTime(T,inputTime)
+<span class="comment">% Input:</span>
+<span class="comment">%   T - ode45 output time values</span>
+<span class="comment">%   inputTime - time's recorded within ode45</span>
+<span class="comment">% This first loop filters out torque indexes that are repeated as</span>
+<span class="comment">% ode45 restarts iterations.</span>
+uIdx = zeros(length(T),1);
+<span class="keyword">for</span> i = 1:length(T)
+    <span class="keyword">try</span>
+        uIdx(i) = find(T(i)==inputTime,1,<span class="string">'last'</span>);
+    <span class="keyword">catch</span> ME
+        <span class="keyword">if</span> strcmp(ME.identifier,<span class="string">'MATLAB:subsassignnumelmismatch'</span>)
+            <span class="keyword">if</span> i&gt;1
+                uIdx(i) = uIdx(i-1);
+            <span class="keyword">else</span>
+                uIdx(i) = 1;
+            <span class="keyword">end</span>
+        <span class="keyword">else</span>
+            rethrow <span class="string">ME</span>
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+<span class="keyword">end</span>
+</pre><pre class="codeoutput error">Error using dbstatus
+Error: File: D:\Google Drive\RBE502\EC2\robustControl.m Line: 26 Column: 14
+Function with duplicate name "robustControl" cannot be defined.
+</pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2016b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% testing algorithm with a set of initial and final states.
+clc
+clear all
+close all
+%Example to demostrate the robust control with planar 2d arm.
+theta10=-0.5;
+dtheta10 =0; 
+theta1f = 0.8;
+dtheta1f=0;
+tf=2;
+
+% plan a trajectory to reach target postion given by theta1f, dot theta1f,
+% theta2f, dot theta2f.
+theta20=-1;
+dtheta20= 0.1; 
+theta2f = 0.5;
+dtheta2f=0;
+
+robustControl(theta10,theta20,dtheta10, dtheta20,theta1f, theta2f,dtheta1f,dtheta2f,tf)%plan_control(theta10,theta20,dtheta10, dtheta20,theta1f, theta2f,dtheta1f,dtheta2f,tf)
+
+
+
+
+
+
+function []= robustControl(theta10,theta20,dtheta10, dtheta20,theta1f, theta2f,dtheta1f,dtheta2f,tf)
+% Robust control design for 2-D planar arm.
+% input: initial and final state.
+% output: Demostrate the performance of robust controller with parameter
+% uncertainty.
+% the nominal model parameter:
+m1 =10; m2=5; l1=1; l2=1; r1=0.5; r2 =.5; I1=10/12; I2=5/12; % parameters in the paper.
+% the nominal parameter vector b0 is
+%b0 = [ m1* r1^2 + m2*l1^2 + I1; m2*r2^2 + I2; m2*l1*r2];
+b0 = [ m1* r1^2 + m2*l1^2 + I1, m2*r2^2 + I2, m2*l1*r2];
+
+
+%% Trajectory planning block
+% Initial condition
+x0=[-0.5,0,-1,0.1];
+x0e = [-0.7,0.5,-0.2,0,b0]; % an error in the initial state.
+xf=[0.8,0.5, 0, 0];
+% The parameter for planned joint trajectory 1 and 2.
+global a1 a2 % two polynomial trajectory for the robot joint
+%%%%%%%
+global torqueTime % for keeping track of control inputs in ode45
+%%%%%%%
+nofigure=1;
+a1 = planarArmTraj(theta10,dtheta10, theta1f, dtheta1f,tf, nofigure);
+a2 = planarArmTraj(theta20,dtheta20, theta2f, dtheta2f,tf, nofigure);
+
+
+torque=[];
+%%%%%%%%%%%
+torqueTime = [];
+%%%%%%%%%%%
+options = odeset('RelTol',1e-4,'AbsTol',[1e-4, 1e-4, 1e-4, 1e-4,1e-4, 1e-4, 1e-4]);
+[T,X] = ode45(@(t,x)planarArmODEUncertain(t,x),[0 tf],x0e,options);
+
+figure('Name','theta1');
+plot(T, X(:,1),'r-');
+hold on
+plot(T, a1(1)+a1(2)*T+ a1(3)*T.^2+a1(4)*T.^3,'b-');
+title('Theta_1 under Robust Control');
+figure('Name','theta2');
+plot(T, X(:,2),'r-');
+hold on
+plot(T, a2(1)+a2(2)*T+ a2(3)*T.^2+a2(4)*T.^3, 'b-');
+title('Theta_2 under Robust Control');
+%%%%%%%%
+uIdx = resampleTime(T,torqueTime);
+figure
+plot(T,torque(1,uIdx))
+hold on
+plot(T,torque(2,uIdx))
+xlabel seconds
+xlabel N-m
+title 'Input Torque'
+legend('\tau_1','\tau_1')
+%%%%%%%%
+
+
+
+
+    function [dx ] = planarArmODEUncertain(t,x)
+        % feedback gain matrix K AND LAMBDA.
+        K= 10*eye(2);
+        Lambda= 5*eye(2);
+        % Compute the desired state and their time derivatives from planned
+        % trajectory.
+        vec_t = [1; t; t^2; t^3]; % cubic polynomials
+        theta_d= [a1'*vec_t; a2'*vec_t];
+        %ref = [ref,theta_d];
+        % compute the velocity and acceleration in both theta 1 and theta2.
+        a1_vel = [a1(2), 2*a1(3), 3*a1(4), 0];
+        a1_acc = [2*a1(3), 6*a1(4),0,0 ];
+        a2_vel = [a2(2), 2*a2(3), 3*a2(4), 0];
+        a2_acc = [2*a2(3), 6*a2(4),0,0 ];
+        dtheta_d =[a1_vel*vec_t; a2_vel* vec_t];
+        ddtheta_d =[a1_acc*vec_t; a2_acc* vec_t];
+        theta= x(1:2,1);
+        dtheta= x(3:4,1);
+        
+        %the true model
+        m1t = 12;% m1 true value is in [m1, m1+epsilon_m1] and epsilon_m1 a random number in [0,10];
+        r1t = 0.8;
+        l1t = 1.2; 
+        I1t = 1;
+        
+        m2t = 4;% m1 true value is in [m1, m1+epsilon_m1] and epsilon_m1 a random number in [0,10];
+        l2t = 1.2;   
+        r2t = 0.5;
+        I2t = 0.5;
+        
+        a = I1t+I2t+m1t*r1t^2+ m2t*(l1t^2+ r2t^2);
+        b = m2t*l1t*r2t;
+        d = I2t+ m2t*r2t^2;
+        % the actual dynamic model of the system is characterized by M and
+        % C
+        Mmat = [a+2*b*cos(x(2)), d+b*cos(x(2));  d+b*cos(x(2)), d];
+        Cmat = [-b*sin(x(2))*x(4), -b*sin(x(2))*(x(3)+x(4)); b*sin(x(2))*x(3),0];
+        invM = inv(Mmat);
+        invMC = invM*Cmat;
+
+        
+        % compute the robust controller
+        e = theta - theta_d;
+        de = dtheta - dtheta_d;
+        r = de + Lambda*e;
+        v = dtheta_d - Lambda*e;
+        a = ddtheta_d - Lambda*de;
+        
+        Y2= [ a(1), a(1) + a(2), 2*a(1)*cos(theta(2)) + a(2)*cos(theta(2)) - dtheta(2)*v(1)*sin(theta(2)) - v(2)*sin(theta(2))*(dtheta(1) + dtheta(2));...
+            0, a(1) + a(2), a(1)*cos(theta(2)) + dtheta(1)*v(1)*sin(theta(2))];
+        %% this is new
+        gamma = [ 1,0,0;
+                   0, 1,0;
+                   0 0 1];
+        thetahat_dot = -inv(gamma)*Y2'*r;
+        %%
+        epsilon=0.2;
+        rho = 13.46; % see eq(27) in the paper.
+        
+%         if norm(Y2'*r) > epsilon
+%             u = -rho* Y2'*r/norm(Y2'*r);
+%         else
+%             u = - rho* Y2'*r/epsilon;
+%         end
+        
+        %tau = Y2*(b0 + u)- K*r
+        %% new tau calculated
+        tau = Y2*x(5:7) - K*r;
+        torque =[torque, tau];
+        %%%%%%%%
+        torqueTime =[torqueTime, t];
+        %%%%%%%%
+        % feed back the thetaHat_dots
+        dx=zeros(7,1);
+        dx(1) = x(3);
+        dx(2) = x(4);
+        dx(3:4) = -invMC* x(3:4) +invM*tau; % because ddot theta = -M^{-1}(C \dot Theta) + M^{-1} tau
+        dx(5:7) = thetahat_dot;
+    end
+end
+
+
+function uIdx = resampleTime(T,inputTime)
+% Input:
+%   T - ode45 output time values
+%   inputTime - time's recorded within ode45
+% This first loop filters out torque indexes that are repeated as
+% ode45 restarts iterations.
+uIdx = zeros(length(T),1);
+for i = 1:length(T)
+    try
+        uIdx(i) = find(T(i)==inputTime,1,'last');
+    catch ME
+        if strcmp(ME.identifier,'MATLAB:subsassignnumelmismatch')
+            if i>1
+                uIdx(i) = uIdx(i-1);
+            else
+                uIdx(i) = 1;
+            end
+        else
+            rethrow ME
+        end
+    end
+end
+end
+
+##### SOURCE END #####
+--></body></html>
